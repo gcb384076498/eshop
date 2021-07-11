@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mineserv.eshop.dao.AddressDao">
+  <resultMap id="BaseResultMap" type="cn.mineserv.eshop.model.Address">
+    <!--@mbg.generated-->
+    <!--@Table `t_address`-->
+    <id column="addr_id" jdbcType="INTEGER" property="addrId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="addr_province" jdbcType="VARCHAR" property="addrProvince" />
+    <result column="addr_city" jdbcType="VARCHAR" property="addrCity" />
+    <result column="addr_area" jdbcType="VARCHAR" property="addrArea" />
+    <result column="addr_content" jdbcType="VARCHAR" property="addrContent" />
+    <result column="addr_receiver" jdbcType="VARCHAR" property="addrReceiver" />
+    <result column="addr_tel" jdbcType="VARCHAR" property="addrTel" />
+    <result column="addr_isdefault" jdbcType="TINYINT" property="addrIsdefault" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--@mbg.generated-->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <!--@mbg.generated-->
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    `addr_id`, `user_id`, `addr_province`, `addr_city`, `addr_area`, `addr_content`, 
+    `addr_receiver`, `addr_tel`, `addr_isdefault`
+  </sql>
+  <select id="selectByExample" parameterType="cn.mineserv.eshop.example.AddressExample" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `t_address`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from `t_address`
+    where `addr_id` = #{addrId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from `t_address`
+    where `addr_id` = #{addrId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.mineserv.eshop.example.AddressExample">
+    <!--@mbg.generated-->
+    delete from `t_address`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="addr_id" keyProperty="addrId" parameterType="cn.mineserv.eshop.model.Address" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `t_address` (`user_id`, `addr_province`, `addr_city`, 
+      `addr_area`, `addr_content`, `addr_receiver`, 
+      `addr_tel`, `addr_isdefault`)
+    values (#{userId,jdbcType=INTEGER}, #{addrProvince,jdbcType=VARCHAR}, #{addrCity,jdbcType=VARCHAR}, 
+      #{addrArea,jdbcType=VARCHAR}, #{addrContent,jdbcType=VARCHAR}, #{addrReceiver,jdbcType=VARCHAR}, 
+      #{addrTel,jdbcType=VARCHAR}, #{addrIsdefault,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="addr_id" keyProperty="addrId" parameterType="cn.mineserv.eshop.model.Address" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `t_address`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        `user_id`,
+      </if>
+      <if test="addrProvince != null and addrProvince != ''">
+        `addr_province`,
+      </if>
+      <if test="addrCity != null and addrCity != ''">
+        `addr_city`,
+      </if>
+      <if test="addrArea != null and addrArea != ''">
+        `addr_area`,
+      </if>
+      <if test="addrContent != null and addrContent != ''">
+        `addr_content`,
+      </if>
+      <if test="addrReceiver != null and addrReceiver != ''">
+        `addr_receiver`,
+      </if>
+      <if test="addrTel != null and addrTel != ''">
+        `addr_tel`,
+      </if>
+      <if test="addrIsdefault != null">
+        `addr_isdefault`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="addrProvince != null and addrProvince != ''">
+        #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null and addrCity != ''">
+        #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrArea != null and addrArea != ''">
+        #{addrArea,jdbcType=VARCHAR},
+      </if>
+      <if test="addrContent != null and addrContent != ''">
+        #{addrContent,jdbcType=VARCHAR},
+      </if>
+      <if test="addrReceiver != null and addrReceiver != ''">
+        #{addrReceiver,jdbcType=VARCHAR},
+      </if>
+      <if test="addrTel != null and addrTel != ''">
+        #{addrTel,jdbcType=VARCHAR},
+      </if>
+      <if test="addrIsdefault != null">
+        #{addrIsdefault,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.mineserv.eshop.example.AddressExample" resultType="java.lang.Long">
+    <!--@mbg.generated-->
+    select count(*) from `t_address`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    <!--@mbg.generated-->
+    update `t_address`
+    <set>
+      <if test="record.addrId != null">
+        `addr_id` = #{record.addrId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        `user_id` = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.addrProvince != null">
+        `addr_province` = #{record.addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrCity != null">
+        `addr_city` = #{record.addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrArea != null">
+        `addr_area` = #{record.addrArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrContent != null">
+        `addr_content` = #{record.addrContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrReceiver != null">
+        `addr_receiver` = #{record.addrReceiver,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrTel != null">
+        `addr_tel` = #{record.addrTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrIsdefault != null">
+        `addr_isdefault` = #{record.addrIsdefault,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    <!--@mbg.generated-->
+    update `t_address`
+    set `addr_id` = #{record.addrId,jdbcType=INTEGER},
+      `user_id` = #{record.userId,jdbcType=INTEGER},
+      `addr_province` = #{record.addrProvince,jdbcType=VARCHAR},
+      `addr_city` = #{record.addrCity,jdbcType=VARCHAR},
+      `addr_area` = #{record.addrArea,jdbcType=VARCHAR},
+      `addr_content` = #{record.addrContent,jdbcType=VARCHAR},
+      `addr_receiver` = #{record.addrReceiver,jdbcType=VARCHAR},
+      `addr_tel` = #{record.addrTel,jdbcType=VARCHAR},
+      `addr_isdefault` = #{record.addrIsdefault,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.mineserv.eshop.model.Address">
+    <!--@mbg.generated-->
+    update `t_address`
+    <set>
+      <if test="userId != null">
+        `user_id` = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="addrProvince != null and addrProvince != ''">
+        `addr_province` = #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null and addrCity != ''">
+        `addr_city` = #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrArea != null and addrArea != ''">
+        `addr_area` = #{addrArea,jdbcType=VARCHAR},
+      </if>
+      <if test="addrContent != null and addrContent != ''">
+        `addr_content` = #{addrContent,jdbcType=VARCHAR},
+      </if>
+      <if test="addrReceiver != null and addrReceiver != ''">
+        `addr_receiver` = #{addrReceiver,jdbcType=VARCHAR},
+      </if>
+      <if test="addrTel != null and addrTel != ''">
+        `addr_tel` = #{addrTel,jdbcType=VARCHAR},
+      </if>
+      <if test="addrIsdefault != null">
+        `addr_isdefault` = #{addrIsdefault,jdbcType=TINYINT},
+      </if>
+    </set>
+    where `addr_id` = #{addrId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.mineserv.eshop.model.Address">
+    <!--@mbg.generated-->
+    update `t_address`
+    set `user_id` = #{userId,jdbcType=INTEGER},
+      `addr_province` = #{addrProvince,jdbcType=VARCHAR},
+      `addr_city` = #{addrCity,jdbcType=VARCHAR},
+      `addr_area` = #{addrArea,jdbcType=VARCHAR},
+      `addr_content` = #{addrContent,jdbcType=VARCHAR},
+      `addr_receiver` = #{addrReceiver,jdbcType=VARCHAR},
+      `addr_tel` = #{addrTel,jdbcType=VARCHAR},
+      `addr_isdefault` = #{addrIsdefault,jdbcType=TINYINT}
+    where `addr_id` = #{addrId,jdbcType=INTEGER}
+  </update>
+  <select id="findAll" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from `t_address`
+    </select>
+  <select id="findByAll" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from `t_address`
+        <where>
+            <if test="addrId != null">
+                and `addr_id`=#{addrId,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null">
+                and `user_id`=#{userId,jdbcType=INTEGER}
+            </if>
+            <if test="addrProvince != null and addrProvince != ''">
+                and `addr_province`=#{addrProvince,jdbcType=VARCHAR}
+            </if>
+            <if test="addrCity != null and addrCity != ''">
+                and `addr_city`=#{addrCity,jdbcType=VARCHAR}
+            </if>
+            <if test="addrArea != null and addrArea != ''">
+                and `addr_area`=#{addrArea,jdbcType=VARCHAR}
+            </if>
+            <if test="addrContent != null and addrContent != ''">
+                and `addr_content`=#{addrContent,jdbcType=VARCHAR}
+            </if>
+            <if test="addrReceiver != null and addrReceiver != ''">
+                and `addr_receiver`=#{addrReceiver,jdbcType=VARCHAR}
+            </if>
+            <if test="addrTel != null and addrTel != ''">
+                and `addr_tel`=#{addrTel,jdbcType=VARCHAR}
+            </if>
+            <if test="addrIsdefault != null">
+                and `addr_isdefault`=#{addrIsdefault,jdbcType=TINYINT}
+            </if>
+        </where>
+    </select>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update `t_address`
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="`user_id` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.userId,jdbcType=INTEGER}
+        </foreach>
+      </trim>
+      <trim prefix="`addr_province` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrProvince,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="`addr_city` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrCity,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="`addr_area` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrArea,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="`addr_content` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrContent,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="`addr_receiver` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrReceiver,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="`addr_tel` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrTel,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="`addr_isdefault` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrIsdefault,jdbcType=TINYINT}
+        </foreach>
+      </trim>
+    </trim>
+    where `addr_id` in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.addrId,jdbcType=INTEGER}
+    </foreach>
+  </update>
+  <update id="updateBatchSelective" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update `t_address`
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="`user_id` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.userId != null">
+            when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.userId,jdbcType=INTEGER}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="`addr_province` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.addrProvince != null">
+            when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrProvince,jdbcType=VARCHAR}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="`addr_city` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.addrCity != null">
+            when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrCity,jdbcType=VARCHAR}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="`addr_area` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.addrArea != null">
+            when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrArea,jdbcType=VARCHAR}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="`addr_content` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.addrContent != null">
+            when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrContent,jdbcType=VARCHAR}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="`addr_receiver` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.addrReceiver != null">
+            when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrReceiver,jdbcType=VARCHAR}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="`addr_tel` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.addrTel != null">
+            when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrTel,jdbcType=VARCHAR}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="`addr_isdefault` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.addrIsdefault != null">
+            when `addr_id` = #{item.addrId,jdbcType=INTEGER} then #{item.addrIsdefault,jdbcType=TINYINT}
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where `addr_id` in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.addrId,jdbcType=INTEGER}
+    </foreach>
+  </update>
+  <insert id="batchInsert" keyColumn="addr_id" keyProperty="addrId" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `t_address`
+    (`user_id`, `addr_province`, `addr_city`, `addr_area`, `addr_content`, `addr_receiver`, 
+      `addr_tel`, `addr_isdefault`)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.userId,jdbcType=INTEGER}, #{item.addrProvince,jdbcType=VARCHAR}, #{item.addrCity,jdbcType=VARCHAR}, 
+        #{item.addrArea,jdbcType=VARCHAR}, #{item.addrContent,jdbcType=VARCHAR}, #{item.addrReceiver,jdbcType=VARCHAR}, 
+        #{item.addrTel,jdbcType=VARCHAR}, #{item.addrIsdefault,jdbcType=TINYINT})
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" keyColumn="addr_id" keyProperty="addrId" parameterType="cn.mineserv.eshop.model.Address" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `t_address`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="addrId != null">
+        `addr_id`,
+      </if>
+      `user_id`,
+      `addr_province`,
+      `addr_city`,
+      `addr_area`,
+      `addr_content`,
+      `addr_receiver`,
+      `addr_tel`,
+      `addr_isdefault`,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="addrId != null">
+        #{addrId,jdbcType=INTEGER},
+      </if>
+      #{userId,jdbcType=INTEGER},
+      #{addrProvince,jdbcType=VARCHAR},
+      #{addrCity,jdbcType=VARCHAR},
+      #{addrArea,jdbcType=VARCHAR},
+      #{addrContent,jdbcType=VARCHAR},
+      #{addrReceiver,jdbcType=VARCHAR},
+      #{addrTel,jdbcType=VARCHAR},
+      #{addrIsdefault,jdbcType=TINYINT},
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="addrId != null">
+        `addr_id` = #{addrId,jdbcType=INTEGER},
+      </if>
+      `user_id` = #{userId,jdbcType=INTEGER},
+      `addr_province` = #{addrProvince,jdbcType=VARCHAR},
+      `addr_city` = #{addrCity,jdbcType=VARCHAR},
+      `addr_area` = #{addrArea,jdbcType=VARCHAR},
+      `addr_content` = #{addrContent,jdbcType=VARCHAR},
+      `addr_receiver` = #{addrReceiver,jdbcType=VARCHAR},
+      `addr_tel` = #{addrTel,jdbcType=VARCHAR},
+      `addr_isdefault` = #{addrIsdefault,jdbcType=TINYINT},
+    </trim>
+  </insert>
+  <insert id="insertOrUpdateSelective" keyColumn="addr_id" keyProperty="addrId" parameterType="cn.mineserv.eshop.model.Address" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `t_address`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="addrId != null">
+        `addr_id`,
+      </if>
+      <if test="userId != null">
+        `user_id`,
+      </if>
+      <if test="addrProvince != null and addrProvince != ''">
+        `addr_province`,
+      </if>
+      <if test="addrCity != null and addrCity != ''">
+        `addr_city`,
+      </if>
+      <if test="addrArea != null and addrArea != ''">
+        `addr_area`,
+      </if>
+      <if test="addrContent != null and addrContent != ''">
+        `addr_content`,
+      </if>
+      <if test="addrReceiver != null and addrReceiver != ''">
+        `addr_receiver`,
+      </if>
+      <if test="addrTel != null and addrTel != ''">
+        `addr_tel`,
+      </if>
+      <if test="addrIsdefault != null">
+        `addr_isdefault`,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="addrId != null">
+        #{addrId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="addrProvince != null and addrProvince != ''">
+        #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null and addrCity != ''">
+        #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrArea != null and addrArea != ''">
+        #{addrArea,jdbcType=VARCHAR},
+      </if>
+      <if test="addrContent != null and addrContent != ''">
+        #{addrContent,jdbcType=VARCHAR},
+      </if>
+      <if test="addrReceiver != null and addrReceiver != ''">
+        #{addrReceiver,jdbcType=VARCHAR},
+      </if>
+      <if test="addrTel != null and addrTel != ''">
+        #{addrTel,jdbcType=VARCHAR},
+      </if>
+      <if test="addrIsdefault != null">
+        #{addrIsdefault,jdbcType=TINYINT},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="addrId != null">
+        `addr_id` = #{addrId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        `user_id` = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="addrProvince != null and addrProvince != ''">
+        `addr_province` = #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null and addrCity != ''">
+        `addr_city` = #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrArea != null and addrArea != ''">
+        `addr_area` = #{addrArea,jdbcType=VARCHAR},
+      </if>
+      <if test="addrContent != null and addrContent != ''">
+        `addr_content` = #{addrContent,jdbcType=VARCHAR},
+      </if>
+      <if test="addrReceiver != null and addrReceiver != ''">
+        `addr_receiver` = #{addrReceiver,jdbcType=VARCHAR},
+      </if>
+      <if test="addrTel != null and addrTel != ''">
+        `addr_tel` = #{addrTel,jdbcType=VARCHAR},
+      </if>
+      <if test="addrIsdefault != null">
+        `addr_isdefault` = #{addrIsdefault,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

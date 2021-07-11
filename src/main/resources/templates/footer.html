@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  Created by IntelliJ IDEA.
+  User: Y_YuanZhouLv
+  Date: 2021/6/28
+  Time: 8:40
+  To change this template use File | Settings | File Templates.
+-->
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <!-- 底部 -->
+            <ul class="breadcrumb" th:fragment="breadcrumb">
+                <li class="breadcrumb-item text-center">
+                    <a href="#">店铺信息</a>
+                    <span class="divider"></span>
+                </li>
+                <li class="breadcrumb-item text-center">
+                    <a href="#">商品目录</a>
+                    <span class="divider"></span>
+                </li>
+                <li class="breadcrumb-item text-center">
+                    <a href="#">联系我们</a>
+                </li>
+            </ul>
+            <ul class="breadcrumb" th:fragment="breadcrumb">
+                <li class="breadcrumb-item text-center">
+                    <div class="text-dark">
+                        &copy;&nbsp;
+                        <span id="year"></span>
+                        &nbsp;圆周率 版权所有，禁止盗用
+                    </div>
+                </li>
+            </ul>
+            <script>
+                var date = new Date();
+                var year = date.getFullYear();
+                document.getElementById('year').innerText=year+'';
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,57 @@
+<!--
+  Created by IntelliJ IDEA.
+  User: Y_YuanZhouLv
+  Date: 2021/7/1
+  Time: 8:23
+  To change this template use File | Settings | File Templates.
+-->
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <div th:replace="header::css"></div>
+    <div th:replace="header::js"></div>
+</head>
+<body>
+<div class="container">
+    <div th:replace="header::nav"></div>
+    <c:forEach begin="1" step="1" end="4">
+        <div class="row">
+            <c:forEach begin="1" step="1" end="4">
+                <div class="col-md-3">
+                    <div class="thumbnail" style="border: 1px solid #ddd;border-radius: 4px;">
+                        <div> <!--style="width: 230px;height: 230px"-->
+                            <a href="#">
+                                <img alt="商品名称" th:src="@{/images/goods/18_1.jpg}" />
+                            </a>
+                            <div class="caption text-center">
+                                <label class="substr color">
+                                    商品名称
+                                </label>
+                                <p>
+                                    原价<i class="bi bi-currency-yen"></i><del>330</del>
+                                    <i class="bi bi-chevron-double-right"></i>
+                                </p>
+                                <p>
+                                    现售<span class="badge badge-success"><i class="bi bi-currency-yen"></i>200</span>
+                                </p>
+                                <p>
+                                    共售出3000件
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </c:forEach>
+
+
+        </div>
+    </c:forEach>
+
+
+
+    <div th:replace="footer::breadcrumb"></div>
+</div>
+</body>
+</html>

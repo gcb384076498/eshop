@@ -1,0 +1,34 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /eshop
+spring:
+  datasource:
+    url: jdbc:mysql:///eshop?characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: gcb20000101
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 500000
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    mode: HTML
+#  application:
+#    name: service-provider
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: cn.mineserv.eshop.model
+  configuration:
+    use-generated-keys: true
+    map-underscore-to-camel-case: true
+
+#logging:
+#  level: debug
+
+community:
+  path:
+    model: http://localhost:8080

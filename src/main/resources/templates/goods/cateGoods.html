@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!--
+  Created by IntelliJ IDEA.
+  User: Y_YuanZhouLv
+  Date: 2021/7/1
+  Time: 8:23
+  To change this template use File | Settings | File Templates.
+-->
+
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <div th:replace="header::css"></div>
+    <div th:replace="header::js"></div>
+    <style>
+        .menuFixed{
+            position:fixed;
+        }
+    </style>
+    <script>
+        function btnSelect(id){
+            $(".list-group-item").removeClass("active");
+            $("#lists_"+id).addClass("active");
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div th:replace="header::nav"></div>
+    <div class="row"  style="border:0 solid red;">
+        <div class="col-md-2">
+
+            <div class="row" id="left_cate" style="z-index:99;">
+                <div class="menu_item">
+                    <ul class="list-group"  id="btn_group">
+                            <a
+                                    th:href="${category.cateId==childId?'#':(#request.contextPath+'goods/cateGoods/'+category.cateId)}"
+                                    th:class="${'list-group-item'+(category.cateId==childId?' active':'')}"
+                                    th:onclick="${'btnSelect('+category.cateId+')'}"
+                                    th:id="${'lists_'+category.cateId}"
+                                    th:utext="${category.cateName}"
+                                    th:each="category,categoryStatus:${categories}" th:if="${category != null}">女装</a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row clearfix">
+                <div class="col-md-4" th:each="goods,goodsStatus:${goodsList}" th:if="${!((goodsList == null) or (goodsList.size() == 0))}">
+                    <div class="thumbnail">
+                        <div style="width:220px; height:172px; display:flex; justify-content:center; margin-left:40px">
+                            <img width="148px" heigth="112px" th:alt="${goods.goodsName}" th:src="|${#request.contextPath}${goods.goodsPic}|" />
+                        </div>
+                        <div class="caption text-center">
+                            <label th:utext="${goods.goodsName}">
+                                每日坚果炒货
+                            </label>
+                            <p>
+                                原价<del><span class="glyphicon glyphicon-yen" aria-hidden="true"></span><span th:utext="${goods.goodsDiscount}">234.0</span></del>
+                                <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+                            </p>
+                            <p>
+                                现售<span class="label label-pill label-info"><span class="glyphicon glyphicon-yen" aria-hidden="true"></span><span th:utext="${goods.goodsPrice}">200.0</span></span>
+                            </p>
+                            <p>
+                                共售出<span th:utext="${goods.goodsSales}">39</span>件
+                            </p>
+                            <p>
+                                <a class="btn btn-primary" th:href="|${#request.contextPath}/goods/goods_detail/${goods.goodsId}|" >查看详情</a>
+                                 <a class="btn btn-primary" th:href="|${#request.contextPath}/order/buyGoods/${goods.goodsId}|" >立即购买</a>
+                                <a class="btn" href="add()">加入购物车</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-danger col-md-2" role="alert" th:if="${((goodsList == null) or (goodsList.size() == 0))}">对不起，暂无此类商品</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function FloatMenu(){
+/*            let menu_top = $('#left_cate').offset().top;
+            if ($(window).scrollTop() >= menu_top) {
+                $('#left_cate').addClass('menuFixed')
+            }
+            else {
+                $('#left_cate').removeClass('menuFixed')
+            }*/
+
+            var animationSpeed=1500;
+            var animationEasing='easeOutQuint';
+            var scrollAmount=$(document).scrollTop();
+            var newPosition=menuPosition+scrollAmount;
+            if($(window).height()<$('#left_cate').height()+$('#left_cate .menu').height()){
+                $('#left_cate').css('top',menuPosition);
+            } else {
+                $('#left_cate').stop().animate({top: newPosition}, animationSpeed, animationEasing);
+            }
+        }
+        $(window).load(function(){
+            menuPosition=$('#left_cate').position().top;
+            FloatMenu();
+        });
+        $(window).scroll(function () {
+            FloatMenu();
+        });
+        $(document).ready(function(){
+            var fadeSpeed=500;
+            $("#fl_menu").hover(function(){
+                $('#left_cate .label').fadeTo(fadeSpeed, 1);
+                $("#left_cate .menu").fadeIn(fadeSpeed);
+            },function(){
+                $('#left_cate .label').fadeTo(fadeSpeed, 0.75);
+                $("#left_cate .menu").fadeOut(fadeSpeed);
+            });
+        });
+    </script>
+    <div th:replace="footer::breadcrumb"></div>
+</div>
+</body>
+</html>
