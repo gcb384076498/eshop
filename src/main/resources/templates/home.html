@@ -25,6 +25,15 @@
     </style>
 </head>
 <body>
+<div th:replace="header::contextPath"></div>
+<div th:replace="header::model_register"></div>
+<div th:replace="header::model_login"></div>
+<div th:replace="header::model_script_login"></div>
+<div th:replace="header::model_script_logout"></div>
+<div th:replace="header::model_script_register"></div>
+<div th:replace="header::model_cart"></div>
+<div th:replace="header::model_message"></div>
+<div th:replace="header::model_script_cart"></div>
 <div class="container">
     <div th:replace="header::nav"></div>
 
@@ -121,10 +130,7 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-
                     <div class="row">
-
-
                         <div class="col-md-2" th:each="hotGoods,hotGoodsStatus:${hotGoodsList}">
                             <a th:href="|${#request.contextPath}/goods/goodsDetail/${hotGoods.goodsId}|">
                                 <div class="thumbnail homegoods">

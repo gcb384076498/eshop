@@ -12,6 +12,29 @@
     <title>Title</title>
     <div th:replace="header::css"></div>
     <div th:replace="header::js"></div>
+    <script>
+        function HTMLEncode(html) {
+            var temp = document.createElement("div");
+            temp.innerText = html;
+            var output = temp.innerHTML;
+            temp = null;
+            return output;
+        }
+        function HTMLDecode(text) {
+            var temp = document.createElement("div");
+            temp.innerHTML = text;
+            var output = temp.innerText;
+            temp = null;
+            return output;
+        }
+    </script>
+    <script>
+        /* <![CDATA[ */
+        let searchName = '[[${searchName}]]';
+        searchName = HTMLDecode(searchName);
+        let searchList = searchName.split(' ');
+        /* ]]> */
+    </script>
     <style>
         .menuFixed{
             position:fixed;
@@ -42,13 +65,13 @@
             <div class="row" id="left_cate" style="z-index:99;">
                 <div class="menu_item">
                     <ul class="list-group"  id="btn_group">
-                        <a
-                                th:href="${(#request.contextPath+'/goods/cateGoods')}"
-                                onclick="btnSelect(0)"
-                                th:class="${'list-group-item'+(0==childId?' active':'')}"
-                                id="lists_0">全部</a>
                             <a
-                                    th:href="${category.cateId==childId?'#':(#request.contextPath+'/goods/cateGoods/'+sortId+'/'+category.cateId)}"
+                                    th:href="${(#request.contextPath+'/goods/searchGoods/'+searchName)}"
+                                    onclick="btnSelect(0)"
+                                    th:class="${'list-group-item'+(0==childId?' active':'')}"
+                                    id="lists_0">全部</a>
+                            <a
+                                    th:href="${category.cateId==childId?'#':(#request.contextPath+'/goods/searchGoods/'+searchName+'/'+sortId+'/'+category.cateId)}"
                                     th:class="${'list-group-item'+(category.cateId==childId?' active':'')}"
                                     th:onclick="|btnSelect(${category.cateId})|"
                                     th:id="${'lists_'+category.cateId}"
@@ -63,12 +86,12 @@
                 <div class="col-md-4" th:each="goods,goodsStatus:${goodsList}" th:if="${!((goodsList == null) or (goodsList.size() == 0))}">
                     <div class="thumbnail">
                         <div style="width:220px; height:172px; display:flex; justify-content:center; margin-left:40px">
-                            <img width="148px" th:alt="${goods.goodsName}" th:src="|${#request.contextPath}${goods.goodsPic}|" />
+                            <img width="148px" height="112px" th:alt="${goods.goodsName}" th:src="|${#request.contextPath}${goods.goodsPic}|" />
                         </div>
                         <div class="caption text-center">
-                            <label th:utext="${goods.goodsName}">
+                            <div th:utext="${goods.goodsName.replaceAll('','')}" class="goodsNameAll">
                                 每日坚果炒货
-                            </label>
+                            </div>
                             <p>
                                 原价<del><span class="glyphicon glyphicon-yen" aria-hidden="true"></span><span th:utext="${goods.goodsDiscount}">234.0</span></del>
                                 <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
@@ -92,6 +115,15 @@
         </div>
     </div>
     <script>
+            var text = $('.goodsNameAll');
+            console.log(text);
+            for (var i=0 ;i<text.length;i++) {
+                let html = text[i].innerText;
+                for (var j in searchList){
+                    html = html.replaceAll(searchList[j],'<span style="color: #ff0000">'+searchList[j]+'</span>');
+                }
+                text[i].innerHTML = html;
+            }
         function FloatMenu(){
 /*            let menu_top = $('#left_cate').offset().top;
             if ($(window).scrollTop() >= menu_top) {

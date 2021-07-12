@@ -1,6 +1,7 @@
 package cn.mineserv.eshop.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable {
     private Integer userId;
@@ -16,6 +17,8 @@ public class User implements Serializable {
     private String userEmail;
 
     private Integer userRank;
+
+    private List<Cart> cartList;
 
     private static final long serialVersionUID = 1L;
 
@@ -75,21 +78,26 @@ public class User implements Serializable {
         this.userRank = userRank;
     }
 
+    public List<Cart> getCartList() {
+        return cartList;
+    }
+
+    public void setCartList(List<Cart> cartList) {
+        this.cartList = cartList;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", userId=").append(userId);
-        sb.append(", userName=").append(userName);
-        sb.append(", userPass=").append(userPass);
-        sb.append(", userAge=").append(userAge);
-        sb.append(", userSex=").append(userSex);
-        sb.append(", userEmail=").append(userEmail);
-        sb.append(", userRank=").append(userRank);
-        sb.append("]");
-        return sb.toString();
+        return "User{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", userPass='" + userPass + '\'' +
+                ", userAge=" + userAge +
+                ", userSex=" + userSex +
+                ", userEmail='" + userEmail + '\'' +
+                ", userRank=" + userRank +
+                ", cartList=" + cartList +
+                '}';
     }
 
     @Override
@@ -110,7 +118,8 @@ public class User implements Serializable {
             && (this.getUserAge() == null ? other.getUserAge() == null : this.getUserAge().equals(other.getUserAge()))
             && (this.getUserSex() == null ? other.getUserSex() == null : this.getUserSex().equals(other.getUserSex()))
             && (this.getUserEmail() == null ? other.getUserEmail() == null : this.getUserEmail().equals(other.getUserEmail()))
-            && (this.getUserRank() == null ? other.getUserRank() == null : this.getUserRank().equals(other.getUserRank()));
+            && (this.getUserRank() == null ? other.getUserRank() == null : this.getUserRank().equals(other.getUserRank()))
+            && (this.getCartList() == null ? other.getCartList() == null : this.getCartList().equals(other.getCartList()));
     }
 
     @Override
@@ -124,6 +133,7 @@ public class User implements Serializable {
         result = prime * result + ((getUserSex() == null) ? 0 : getUserSex().hashCode());
         result = prime * result + ((getUserEmail() == null) ? 0 : getUserEmail().hashCode());
         result = prime * result + ((getUserRank() == null) ? 0 : getUserRank().hashCode());
+        result = prime * result + ((getCartList() == null) ? 0 : getCartList().hashCode());
         return result;
     }
 }

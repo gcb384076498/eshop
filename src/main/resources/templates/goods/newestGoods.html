@@ -14,43 +14,45 @@
 </head>
 <body>
 <div class="container">
+    <div th:replace="header::contextPath"></div>
+    <div th:replace="header::model_register"></div>
+    <div th:replace="header::model_login"></div>
+    <div th:replace="header::model_script_login"></div>
+    <div th:replace="header::model_script_logout"></div>
+    <div th:replace="header::model_script_register"></div>
+    <div th:replace="header::model_cart"></div>
+    <div th:replace="header::model_message"></div>
+    <div th:replace="header::model_script_cart"></div>
     <div th:replace="header::nav"></div>
-    <c:forEach begin="1" step="1" end="4">
+    <div th:if="${!newGoods.isEmpty() and newGoods.size() != 0}">
         <div class="row">
-            <c:forEach begin="1" step="1" end="4">
-                <div class="col-md-3">
-                    <div class="thumbnail" style="border: 1px solid #ddd;border-radius: 4px;">
-                        <div> <!--style="width: 230px;height: 230px"-->
-                            <a href="#">
-                                <img alt="商品名称" th:src="@{/images/goods/18_1.jpg}" />
-                            </a>
-                            <div class="caption text-center">
-                                <label class="substr color">
-                                    商品名称
-                                </label>
-                                <p>
-                                    原价<i class="bi bi-currency-yen"></i><del>330</del>
-                                    <i class="bi bi-chevron-double-right"></i>
-                                </p>
-                                <p>
-                                    现售<span class="badge badge-success"><i class="bi bi-currency-yen"></i>200</span>
-                                </p>
-                                <p>
-                                    共售出3000件
-                                </p>
-                            </div>
+            <div class="col-md-3" th:each="goods,goodsStatus:${newGoods}">
+                <div class="thumbnail" style="border: 1px solid #ddd;border-radius: 4px;margin-top: 10px">
+                    <div style="width: 230px;height: 320px;margin-top: 30px">
+                        <a href="#" style="margin: 0 auto;display: flex;align-content: space-between;justify-content: space-around;">
+                            <img th:alt="${goods.goodsName}" th:src="@{${goods.goodsPic}}" width="148px"/>
+                        </a>
+                        <div class="caption text-center">
+                            <label class="substr color" th:utext="${goods.goodsName}">
+                                商品名称
+                            </label>
+                            <p>
+                                原价<i class="bi bi-currency-yen"></i><del th:utext="${goods.goodsDiscount}">330</del>
+                                <i class="bi bi-chevron-double-right"></i>
+                            </p>
+                            <p>
+                                现售<span class="badge badge-success"><i class="bi bi-currency-yen"></i><span th:utext="${goods.goodsPrice}">200</span></span>
+                            </p>
+                            <p>
+                                共售出<span th:utext="${goods.goodsSales}">3000</span>件
+                            </p>
                         </div>
-
                     </div>
+
                 </div>
-            </c:forEach>
-
-
+            </div>
         </div>
-    </c:forEach>
-
-
-
+    </div>
     <div th:replace="footer::breadcrumb"></div>
 </div>
 </body>

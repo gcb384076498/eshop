@@ -15,24 +15,263 @@
     <script type="text/javascript" th:src="@{/js/jquery/jquery.easing.1.3.js}" th:fragment="js"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script th:src="@{/css/bootstrap/js/bootstrap.min.js}" th:fragment="js"></script>
-
+    <script th:src="@{/js/sweetalert/sweetalert.min.js}" th:fragment="js"></script>
 </head>
 <body>
+<script th:fragment="contextPath">
+    /*<![CDATA[*/
+    let contextPath = '[[@{/}]]';
+    contextPath = contextPath.substring(0,contextPath.length-1);
+    /*]]>*/
+</script>
+<script th:fragment="model_script_logout">
+    function logout(){
+        $.post(contextPath+"/user/logout",null,function(data){
+            if(data.state){
+                $("#info").html(
+                    "<li id='li1'><span>游客您好，欢迎来到随意购商城！</span>"+
+                    "<a href='#loginFormModal' data-toggle='modal'>[登录]</a>&nbsp;<a href='#regFormModal' data-toggle='modal'>[新用户注册]</a></li>"+
+                    "<li><a href='#' onclick='showCart()'>购物车 <span class='badge' id='cartBadge'></span></a></li>");
+            }
+        },"json");
+    }
+</script>
+<script th:fragment="model_script_login">
+    function login() {
+        $.post(contextPath + "/user/login", $('#loginForm').serialize(),
+            function (result) {
+
+                if (result.state) {
+
+                    $('#loginFormModal').modal('hide');
+
+                    $("#info").html("<li id='li1'><span>" + result.username + " 您好，欢迎来到随意购商城！</span>" +
+                        "<li><a href='#' onclick='showCart()'>购物车 <span class='badge' id='cartBadge'></span></a></li>" +
+                        "<li><a href='"+contextPath+"/order/getMyOrders'>我的订单</a></li>" +
+                        "<li><a href='"+contextPath+"/user/index'>个人中心</a></li>" +
+                        "<li><a href='#' onclick='logout()'>退出登录</a></li>");
+                }else{
+                    $("#msgTitle").html("登录失败");
+                    $("#msgBody").html("用户名或密码错误");
+                    $("#msgModal").modal();
+                }
+            },"json");
+
+
+    }
+
+</script>
+<script type="text/javascript" th:fragment="model_script_register">
+    function reg(){
+        $.post(contextPath+"/user/register",$('#registerForm').serialize(),
+            function(result){
+                $('#regFormModal').modal('hide');
+                if(result.state){
+                    $("#msgTitle").html("注册成功");
+                    $("#msgBody").html("恭喜您，注册成功");
+                    $("#msgModal").modal();
+                    swal({})
+
+                    $("#info").html("<li id='li1'><span>"+result.username+" 您好，欢迎来到随意购商城！</span>"+
+                        "<li><a href='#' onclick='showCart()'>购物车 <span class='badge' id='cartBadge'>0</span></a></li>"+
+                        "<li><a href='"+contextPath+"/order/getMyOrders'>我的订单</a></li>"+
+                        "<li><a href='"+contextPath+"/user/index'>个人中心</a></li>"+
+                        "<li><a href='#' onclick='logout()'>退出登录</a></li>");
+
+                }
+                else {
+                    $("#msgTitle").html("注册失败");
+                    $("#msgBody").html("对不起，注册失败");
+                    $("#msgModal").modal();
+                }
+            });
+    }
+
+</script>
+<div class="modal fade" id="regFormModal" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel" th:fragment="model_register">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+                <h4 class="modal-title" id="myLoginModalLabel">新用户注册</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="registerForm"  method="post">
+                    <div class="form-group">
+                        <label for="userName"> 用户名 </label>
+                        <input class="form-control" name="username" type="text" placeholder="用户名" required/>
+                        <span id="checkNameResult"></span>
+                    </div>
+                    <div class="form-group">
+                        <label> 密码 </label>
+                        <input class="form-control" name="password" type="password" placeholder="密码"  required/>
+                    </div>
+                    <div class="form-group">
+                        <label> 密码确认 </label>
+                        <input class="form-control" name="repassword" type="password" placeholder="密码确认"  required/>
+                    </div>
+                    <div class="form-group">
+                        <label> 年龄</label>
+                        <input class="form-control" name="age" type="number" placeholder="年龄" />
+                    </div>
+                    <div class="form-group">
+                        <label> 性别 </label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="sex" value="0" checked> 男
+                            </label>
+                            <label>
+                                <input type="radio" name="sex" value="1"> 女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>	邮箱</label>
+                        <input class="form-control" name="email" type="email" placeholder="Email" />
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" onclick="reg()">注册</button>
+                <button class="btn btn-default" type="button"
+                        data-dismiss="modal">关闭窗口</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="msgModal" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel" th:fragment="model_message">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" type="button" data-dismiss="modal">
+                    ×
+                </button>
+                <h4 class="modal-title" id="msgTitle">
+
+                </h4>
+            </div>
+            <div class="modal-body" id="msgBody">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">关闭窗口</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal fade" id="loginFormModal" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel" th:fragment="model_login">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" type="button"
+                            data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabel">用户登录</h4>
+                </div>
+                <form role="form" id="loginForm">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="username">用户名</label><input type="text" class="form-control" id="username" name="username" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">密码</label><input type="password" class="form-control" id="password" name="password"/>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button class="btn btn-primary" type="button" onclick="login()">登录</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal">关闭窗口</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+</div>
+<div class="modal fade" id="cartModal" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel" th:fragment="model_cart">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="cartTitle">
+                    我的购物车
+                </h4>
+                <button class="close" aria-hidden="true" type="button" data-dismiss="modal">
+                    ×
+                </button>
+            </div>
+            <form class="form-inline" role="form" th:action="${#request.contextPath+'/goods/payGoods'}" method="post">
+                <div class="modal-body" id="cartBody">
+                    <div id="cart_msg" style="display:none" th:utext="${cartList == null?'目前购物车为空，快去购物吧':''}"></div>
+                    <table class="table table-striped" id="cart_tab" th:if="${cartList != null}">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>商品图片</th>
+                            <th>商品名称</th>
+                            <th>商品单价</th>
+                            <th>数量</th>
+                            <th>小计</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="cart_tbody">
+
+                        <tr th:each="cart,cartState:${cartList}">
+                            <td th:utext="${cartState.count}">1</td>
+                            <td><img th:src="@{${cart.goods.goodsPic}}" height="100" width="100"></td>
+                            <td th:utext="${cart.goods.goodsName}">夏威夷果坚果礼盒</td>
+                            <td th:utext="${cart.goods.goodsDiscount}">59.0</td>
+                            <td><input type="text" name="goodsSales" value="5" th:size="${cart.number}" /></td>
+                            <td th:utext="${cart.goods.goodsDiscount*cart.number}" id="money"></td>
+                            <td><a href="#">删除</a></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit" id="ok">去结算</button>
+                    <button class="btn btn-default" type="button" data-dismiss="modal" onclick="closeMsg()">关闭窗口</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript" th:fragment="model_script_cart">
+    function showCart(){
+        /*<![CDATA[*/
+        let isCartListEmpty = [[${cartList == null}]];
+        /*]]>*/
+        $("#cartModal").modal('show');
+    }
+    function closeMsg(){
+        window.location.reload();
+    }
+</script>
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 ">
             <nav aria-label="breadcrumb" th:fragment="bread">
-                <ol class="breadcrumb text-right" id="info" th:if="${((isLogin == null) or (!isLogin))}">
+                <ol class="breadcrumb text-right" id="info" th:if="${!(session.isLogin)}">
                     <li id="li1">
                         <span>游客 您好，欢迎来到随意购商城！</span>
                         <a href="#loginFormModal" data-toggle="modal">[登录]</a>&nbsp;
                         <a href="#regFormModal" data-toggle="modal">[新用户注册]</a>
                     </li>
                     <li>
-                        <a href="#" onclick="">购物车 <span class="badge" id="cartBadge"></span></a>
+                        <a href="#" onclick="showCart()">购物车 <span class="badge" id="cartBadge"></span></a>
                     </li>
                 </ol>
-                <ol class="breadcrumb text-right" id="info" th:if="${!((isLogin == null) or (!isLogin))}">
+                <ol class="breadcrumb text-right" id="info" th:if="${session.isLogin}">
                     <li id="li1"><span th:utext="${ session.currentUserName + ' 您好，欢迎来到随意购商城！'}"></span>
                     <li><a href="#" onclick='showCart()'>购物车 <span class="badge" id="cartBadge"></span></a></li>
                     <li><a th:href="${#request.contextPath+'/order/getMyOrders'}">我的订单</a></li>
@@ -52,23 +291,23 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
+                        <li th:class="${'nav-item' + (link == 'index'?' active':'')}">
                             <a class="nav-link" th:href="@{/index}">首页<span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item">
+                        <li th:class="${'nav-item' + (link == 'saleGoods'?' active':'')}">
                             <a class="nav-link" th:href="@{/goods/saleGoods}">热销商品</a>
                         </li>
-                        <li class="nav-item">
+                        <li th:class="${'nav-item' + (link == 'newestGoods'?' active':'')}">
                             <a class="nav-link" th:href="@{/goods/newestGoods}">新到商品</a>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li th:class="${'nav-item' + (link == 'cateGoods'?' active':'')}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
                                 商品分类
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
                                 <div th:if="${!(category.childCategory.size() == 0)}" th:each="category,categoryStatus:${categoryList}">
                                     <div th:each="childCategory,childCategoryStatus:${category.childCategory}">
-                                        <a class="dropdown-item" th:href="|@{/goods/cateGoods}/${childCategory.cateId}|" th:utext="${childCategory.cateName}"></a>
+                                        <a class="dropdown-item" th:href="|@{/goods/cateGoods}/0/${childCategory.cateId}|" th:utext="${childCategory.cateName}"></a>
                                     </div>
                                     <div class="dropdown-divider"></div>
                                 </div>
@@ -76,28 +315,34 @@
                         </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0 navbar-left">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">店内搜索</button>
+                        <script>
+                            $(function () {
+                                if(searchName != undefined){
+                                    document.getElementById('searchKey').value = searchName;
+                                }
+                            });
+                        </script>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchKey">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="if(document.getElementById('searchKey').value!==''){location.href=contextPath+'/goods/searchGoods/'+encodeURIComponent(encodeURIComponent(document.getElementById('searchKey').value))}else{location.href=contextPath+'/goods/searchGoods'}">店内搜索</button>
                     </form>
                     <ul class="navbar-nav">
 
                         <li class="nav-item dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">排序<strong class="caret"></strong></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#">按价格从低到高</a>
-                                </li>
-                                <li>
-                                    <a href="#">按价格从高到低</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="#">按销量从高到低</a>
-                                </li>
-                                <li>
-                                    <a href="#">按销量从低到高</a>
-                                </li>
-                            </ul>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">排序</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:if="${link == 'searchGoods'}">
+                                <a th:href="${#request.contextPath + '/goods/searchGoods/'+searchName + '/1'}" class="dropdown-item">按价格从低到高</a>
+                                <a th:href="${#request.contextPath + '/goods/searchGoods/'+searchName + '/2'}" class="dropdown-item">按价格从高到低</a>
+                                <div class="dropdown-divider"></div>
+                                <a th:href="${#request.contextPath + '/goods/searchGoods/'+searchName + '/3'}" class="dropdown-item">按销量从高到低</a>
+                                <a th:href="${#request.contextPath + '/goods/searchGoods/'+searchName + '/4'}" class="dropdown-item">按销量从低到高</a>
+                            </div>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:if="${link != 'searchGoods'}">
+                                <a th:href="${#request.contextPath + '/goods/cateGoods/1'}" class="dropdown-item">按价格从低到高</a>
+                                <a th:href="${#request.contextPath + '/goods/cateGoods/2'}" class="dropdown-item">按价格从高到低</a>
+                                <div class="dropdown-divider"></div>
+                                <a th:href="${#request.contextPath + '/goods/cateGoods/3'}" class="dropdown-item">按销量从高到低</a>
+                                <a th:href="${#request.contextPath + '/goods/cateGoods/4'}" class="dropdown-item">按销量从低到高</a>
+                            </div>
                         </li>
                     </ul>
                 </div>

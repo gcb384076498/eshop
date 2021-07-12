@@ -11,6 +11,7 @@
 <head>
     <div th:replace="header::css"></div>
     <div th:replace="header::js"></div>
+    <title>隨意購商城</title>
     <link rel="stylesheet"
           th:href="@{/plugs/zoom/css/ShopShow.css}"
           type="text/css"/>
@@ -21,7 +22,32 @@
             th:src="@{/plugs/zoom/js/MagicZoom.js}"
             type="text/javascript"></script>
     <script>
-        function btnSelect(child,parent) {
+        /* <![CDATA[ */
+        let goodsId = [[${goods.goodsId}]];
+        let contentId = [];
+        /* ]]> */
+    function buy() {
+        location.href = contextPath + '/order/buyGoods/' + goodsId;
+    }
+        function add(){
+            $.post(contextPath+"/goods/addCart",$('#fm_goods').serialize(),function(result){
+
+                if(result.state){
+                    $("#cartBadge").html(result.cartnum);
+                    $("#cartTitle").html("添加成功");
+                    $("#cart_msg").html("已将商品加入到购物车。");
+                }else{
+                    $("#cartTitle").html("添加失败");
+                    $("#cart_msg").html("请重新选择商品。");
+                }
+
+                $("#cartModal").modal('show');
+                $("#cart_msg").show();
+                $("#cart_tab").hide();
+
+            },"json");
+        }
+    function btnSelect(child,parent,contentId) {
             var button = parent.getElementsByTagName('button');
             var btn = [];
             for (var i = 0; i < button.length; i++) {
@@ -37,6 +63,15 @@
     </script>
 </head>
 <body>
+<div th:replace="header::contextPath"></div>
+<div th:replace="header::model_register"></div>
+<div th:replace="header::model_login"></div>
+<div th:replace="header::model_script_login"></div>
+<div th:replace="header::model_script_logout"></div>
+<div th:replace="header::model_script_register"></div>
+<div th:replace="header::model_cart"></div>
+<div th:replace="header::model_message"></div>
+<div th:replace="header::model_script_cart"></div>
 <!-- 面包线 -->
 <div class="container">
     <div th:replace="header::nav"></div>
@@ -100,7 +135,7 @@
                         <div class="btn-group" role="group" th:id="${'btn_group_'+goodsDetailType.typeId}">
 
                             <button type="button" th:class="|${'btn btn-default btn-xs'+(goodsDetailStatus.count==1?' btn-info':'')}|"
-                                    th:id="${'btn_'+goodsDetail.contentId}" onclick="btnSelect(this,this.parentElement)" th:each="goodsDetail,goodsDetailStatus:${goodsDetailType.goodsDetailList}" th:utext="${goodsDetail.content}">1包
+                                    th:id="${'btn_'+goodsDetail.contentId}" th:onclick="|btnSelect(this,this.parentElement,${goodsDetail.contentId})|" th:each="goodsDetail,goodsDetailStatus:${goodsDetailType.goodsDetailList}" th:utext="${goodsDetail.content}">1包
                             </button>
                         </div>
                     </div>
@@ -111,7 +146,7 @@
                         <div class="form-group">
                             <label for="goodsSales">数量：</label>
                             <div class="input-group input-group-sm col-xs-4">
-                                <input class="form-control" id="goodsSales" name="goodsSales"
+                                <input class="form-control" id="goodsSales" name="number"
                                        type="number" value="1" min="1"/>
                             </div>
                         </div>
@@ -125,7 +160,7 @@
                         运费：<small>￥</small><span th:utext="${goods.goodsPostalfee}"></span>
                     </p>
                     <p>
-                        <button class="btn btn-primary btn-sm" type="submit">立即购买
+                        <button class="btn btn-primary btn-sm" type="button" onclick="buy()">立即购买
                         </button>
                         <button class="btn btn-primary btn-sm" type="button">
                             加入购物车
